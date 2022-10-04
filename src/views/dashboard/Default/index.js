@@ -14,8 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import AddIcon from '@mui/icons-material/Add';
 import Popup from './Popup';
-import Form from './Form';
-import { formData } from './formData';
+import CompanyForm from './CompanyForm';
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = ({ companies, loadCompany, locations, loadLocations, addCompany }) => {
@@ -131,8 +130,8 @@ const Dashboard = ({ companies, loadCompany, locations, loadLocations, addCompan
                                     Obrisi
                                 </Button>
                             </FormControl>
-                            <Popup title="Employee Form" openPopup={openPopup} setOpenPopup={setOpenPopup}>
-                                <Form formData={formData} />
+                            <Popup title="Dodaj kompaniju" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+                                <CompanyForm />
                             </Popup>
                         </Stack>
                     </Grid>
