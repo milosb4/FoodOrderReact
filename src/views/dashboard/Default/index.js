@@ -7,17 +7,18 @@ import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import { gridSpacing } from 'store/constant';
-import { addCompany, loadCompany } from '../../../store/actions/companyActions';
-import { loadLocations } from '../../../store/actions/locationActions';
+import { loadCompany, deleteCompany } from '../../../store/actions/companyActions';
+import { deleteLocation, loadLocations } from '../../../store/actions/locationActions';
 import { PropTypes } from 'prop-types';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import AddIcon from '@mui/icons-material/Add';
 import Popup from './Popup';
 import CompanyForm from './CompanyForm';
+import { toast } from 'react-toastify';
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
-const Dashboard = ({ companies, loadCompany, locations, loadLocations, addCompany }) => {
+const Dashboard = ({ companies, loadCompany, locations, loadLocations, deleteCompany, deleteLocation }) => {
     const [isLoading, setLoading] = useState(true);
     const [company, setCompany] = useState('');
     const [location, setLocation] = useState('');
@@ -31,7 +32,23 @@ const Dashboard = ({ companies, loadCompany, locations, loadLocations, addCompan
         }
     }, []);
 
-    const handleAddCompanyChange = (event) => {};
+    const handleDeleteCompanyChange = (event) => {
+        toast.success('Kompanija obrisana');
+        try {
+            deleteCompany(company);
+        } catch (error) {
+            toast.error('Delete failed. ' + error.message, { autoClose: false });
+        }
+    };
+
+    const handleDeleteLocationChange = (event) => {
+        toast.success('Lokacija je obrisana');
+        try {
+            deleteLocation(location);
+        } catch (error) {
+            toast.error('Delete failed. ' + error.message, { autoClose: false });
+        }
+    };
 
     const handleCompanyChange = (event) => {
         setCompany(event.target.value);
@@ -84,7 +101,7 @@ const Dashboard = ({ companies, loadCompany, locations, loadLocations, addCompan
                                     size="small"
                                     startIcon={<DeleteIcon />}
                                     onClick={() => {
-                                        openInPopup('');
+                                        handleDeleteCompanyChange('');
                                     }}
                                 >
                                     Obrisi
@@ -124,7 +141,7 @@ const Dashboard = ({ companies, loadCompany, locations, loadLocations, addCompan
                                     size="small"
                                     startIcon={<DeleteIcon />}
                                     onClick={() => {
-                                        openInPopup('');
+                                        handleDeleteLocationChange(location);
                                     }}
                                 >
                                     Obrisi
@@ -161,7 +178,8 @@ Dashboard.propTypes = {
     companies: PropTypes.array.isRequired,
     loadCompany: PropTypes.func.isRequired,
     locations: PropTypes.array.isRequired,
-    loadLocations: PropTypes.func.isRequired
+    loadLocations: PropTypes.func.isRequired,
+    deleteCompany: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -173,7 +191,9 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = {
     loadCompany,
-    loadLocations
+    loadLocations,
+    deleteCompany,
+    deleteLocation
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

@@ -7,7 +7,11 @@ export function loadCompanySuccess(companies) {
 }
 
 export function createCompanySuccess(company) {
-    return { type: actionTypes.CREATE_COMPANY_SUCCESS, course };
+    return { type: actionTypes.CREATE_COMPANY_SUCCESS, company };
+}
+
+export function deleteCompanyOptimistic(company) {
+    return { type: actionTypes.DELETE_COMPANY_OPTIMISTIC, company };
 }
 
 export function loadCompany() {
@@ -36,5 +40,14 @@ export function addCompany(companyName) {
                 dispatch(apiCallError(error));
                 throw error;
             });
+    };
+}
+
+export function deleteCompany(company) {
+    return function (dispatch) {
+        // Doing optimistic delete, so not dispatching begin/end api call
+        // actions, or apiCallError action since we're not showing the loading status for this.
+        dispatch(deleteCompanyOptimistic(company));
+        return companyApi.deleteCompany(company);
     };
 }
