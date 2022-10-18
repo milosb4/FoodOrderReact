@@ -20,6 +20,7 @@ import EditTemplateForm from '../../dashboard/Default/modals/EditTemplate';
 import MealsTb from './MealsTb';
 import AddMealForm from '../../dashboard/Default/modals/AddMealForm';
 import EditMealForm from '../../dashboard/Default/modals/EditMeal';
+import OrderTb from './OrderTb';
 
 const OrderManagement = ({ loadTemplates, templates, deleteTemplate, loadMeals, meals, deleteMeals, assignMeals, updateMealsIsActive }) => {
     const [isLoading, setLoading] = useState(true);
@@ -163,6 +164,13 @@ const OrderManagement = ({ loadTemplates, templates, deleteTemplate, loadMeals, 
                                     />
                                 </Grid>
                             </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <Grid container spacing={gridSpacing}>
+                        <Grid item lg={12} md={12} sm={12} xs={12}>
+                            <OrderTb />
                         </Grid>
                     </Grid>
                 </Grid>

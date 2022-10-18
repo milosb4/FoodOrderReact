@@ -4,5 +4,6 @@ export default {
     users: [],
     templates: [],
     meals: [],
+    orders: [],
     apiCallsInProgress: 0
 };

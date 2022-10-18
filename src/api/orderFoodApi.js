@@ -82,3 +82,9 @@ export function assignMealsToTemplate(template) {
         .then(handleResponse)
         .catch(handleError);
 }
+
+export function getOrders(shift) {
+    return fetch(baseUrl + 'orders?shift=' + shift)
+        .then(handleResponse)
+        .catch(handleError);
+}

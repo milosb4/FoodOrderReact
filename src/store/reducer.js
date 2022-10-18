@@ -4,6 +4,7 @@ import locations from './reducers/locationReducer';
 import users from './reducers/userReducer';
 import templates from './reducers/templateReducer';
 import meals from './reducers/mealReducer';
+import orders from './reducers/orderReducer';
 // reducer import
 import customizationReducer from './customizationReducer';
 import apiCallsInProgress from './reducers/apiStatusReducer';
@@ -17,6 +18,7 @@ const reducer = combineReducers({
     users,
     templates,
     meals,
+    orders,
     apiCallsInProgress
 });
 
