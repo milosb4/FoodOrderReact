@@ -42,3 +42,49 @@ export function deleteLocation(location) {
         .then(handleResponse)
         .catch(handleError);
 }
+
+export function addLocation(model) {
+    return fetch(baseUrl + 'location', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(model)
+    })
+        .then(handleResponse)
+        .catch(handleError);
+}
+
+export function getUsers(location) {
+    return fetch(baseUrl + 'users?locationId=' + location)
+        .then(handleResponse)
+        .catch(handleError);
+}
+
+export function addUser(model) {
+    return fetch(baseUrl + 'users', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(model)
+    })
+        .then(handleResponse)
+        .catch(handleError);
+}
+
+export function deleteUsers(users) {
+    return fetch(baseUrl + 'users', {
+        method: 'DELETE',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(users)
+    })
+        .then(handleResponse)
+        .catch(handleError);
+}
+
+export function activateUsers(users) {
+    return fetch(baseUrl + 'users', {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(users)
+    })
+        .then(handleResponse)
+        .catch(handleError);
+}

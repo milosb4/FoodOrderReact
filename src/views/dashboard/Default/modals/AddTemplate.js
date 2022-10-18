@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Grid } from '@material-ui/core';
-import Controls from './controls/Controls';
-import { useForm, Form } from './useForm';
+import Controls from '../controls/Controls';
+import { useForm, Form } from '../useForm';
 import { connect } from 'react-redux';
-import { addCompany } from '../../../store/actions/companyActions';
+import { addTemplate } from '../../../../store/actions/templateActions';
 import PropTypes from 'prop-types';
 
 const initialFValues = {
-    companyName: ''
+    templateName: ''
 };
 
-const CompanyForm = ({ addCompany }) => {
+const TemplateForm = ({ addTemplate }) => {
     const validate = (fieldValues = values) => {
         let temp = { ...errors };
-        if ('companyName' in fieldValues) temp.companyName = fieldValues.companyName ? '' : 'Polje je obavezno.';
+        if ('templateName' in fieldValues) temp.templateName = fieldValues.templateName ? '' : 'Polje je obavezno.';
         setErrors({
             ...temp
         });
@@ -26,12 +26,12 @@ const CompanyForm = ({ addCompany }) => {
         const { name, value } = e.target;
         e.preventDefault();
         if (validate()) {
-            addCompany(values.companyName)
+            addTemplate(values.templateName)
                 .then(() => {
                     resetForm();
                 })
                 .catch((error) => {
-                    alert('Cuvanje kompanije nije uspjelo' + error);
+                    alert('Cuvanje template-a nije uspjelo' + error);
                 });
         }
     };
@@ -41,11 +41,11 @@ const CompanyForm = ({ addCompany }) => {
             <Grid container>
                 <Grid item xs={12}>
                     <Controls.Input
-                        name="companyName"
-                        label="Naziv kompanije"
-                        value={values.companyName}
+                        name="templateName"
+                        label="Naziv templejta"
+                        value={values.templateName}
                         onChange={handleInputChange}
-                        error={errors.companyName}
+                        error={errors.templateName}
                     />
                     <div>
                         <Controls.Button type="submit" text="Posalji" />
@@ -57,8 +57,8 @@ const CompanyForm = ({ addCompany }) => {
     );
 };
 
-CompanyForm.propTypes = {
-    addCompany: PropTypes.func.isRequired
+TemplateForm.propTypes = {
+    addTemplate: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -66,7 +66,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-    addCompany
+    addTemplate
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CompanyForm);
+export default connect(mapStateToProps, mapDispatchToProps)(TemplateForm);
