@@ -4,10 +4,8 @@ export async function handleResponse(response) {
         return response.text().then((data) => {
             return data ? JSON.parse(data) : {};
         });
-        debugger;
     }
     if ((await response.status) === 400) {
-        debugger;
         // So, a server-side validation error occurred.
         // Server side validation returns a string error message, so parse as text instead of json.
         const error = await response.text();

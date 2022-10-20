@@ -12,7 +12,6 @@ export default function mealReducer(state = initialState.meals, action) {
         case types.UPDATE_MEALS_IS_ACTIVE:
             return setIsActive(state, action.selected);
         case types.EDIT_MEAL_SUCCESS:
-            debugger;
             return state.map((meal) => (meal.id === action.meal.id ? action.meal : meal));
         default:
             return state;

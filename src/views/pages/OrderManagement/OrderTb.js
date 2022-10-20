@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import MainCard from '../../../ui-component/cards/MainCard';
 import { gridSpacing } from '../../../store/constant';
@@ -9,59 +9,76 @@ import { loadOrders } from '../../../store/actions/orderActions';
 import MenuItem from '@mui/material/MenuItem';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
-
-const columns = [
-    { field: 'templateId', headerName: 'ID', width: 90 },
-    {
-        field: 'date',
-        headerName: 'Datum',
-        type: 'date',
-        valueGetter: ({ value }) => value && new Date(value),
-        width: 150
-    },
-    {
-        field: 'dayNumber',
-        headerName: 'Dan',
-        type: 'number',
-        width: 150,
-        editable: false
-    },
-    {
-        field: 'templateName',
-        headerName: 'Template',
-        width: 110,
-        editable: false
-    },
-    {
-        field: 'shift',
-        headerName: 'Smjena',
-        type: 'number',
-        width: 110,
-        editable: false
-    },
-    {
-        field: 'actions',
-        type: 'actions',
-        getActions: (params) => [<GridActionsCellItem icon={<EditIcon color={'warning'} />} label="Delete" />]
-    }
-];
+import Popup from '../../dashboard/Default/modals/Popup';
+import OrderAddForm from './OrderAddForm';
+import OrderEditForm from './OrderEditForm';
 
 const OrderTb = ({ orders, loadOrders }) => {
     const [shift, setShift] = useState(1);
+    const [openPopup, setOpenPopup] = useState(false);
+    const [openEditPopup, setOpenEditPopup] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState({});
+    const columns = [
+        { field: 'templateId', headerName: 'ID', width: 90 },
+        {
+            field: 'date',
+            headerName: 'Datum',
+            type: 'date',
+            valueGetter: ({ value }) => value && new Date(value),
+            width: 150
+        },
+        {
+            field: 'dayNumber',
+            headerName: 'Dan',
+            type: 'number',
+            width: 150,
+            editable: false
+        },
+        {
+            field: 'templateName',
+            headerName: 'Template',
+            width: 110,
+            editable: false
+        },
+        {
+            field: 'shift',
+            headerName: 'Smjena',
+            type: 'number',
+            width: 110,
+            editable: false
+        },
+        {
+            field: 'actions',
+            type: 'actions',
+            getActions: (params) => [
+                <GridActionsCellItem onClick={editOrder(params)} icon={<EditIcon color={'warning'} />} label="Delete" />
+            ]
+        }
+    ];
+
     useEffect(() => {
         if (orders.length === 0) {
             loadOrders(1).catch((error) => {
-                debugger;
                 alert('Loading templates failed' + error);
             });
         }
+        console.log(orders);
     }, []);
     const handleShiftChange = (event) => {
         setShift(event.target.value);
-        console.log(shift);
+        loadOrders(event.target.value);
     };
-
-    const handleAddOrder = () => {};
+    const handleAddOrder = () => {
+        setOpenPopup(true);
+    };
+    const editOrder = React.useCallback(
+        (params) => () => {
+            setSelectedOrder(params.row);
+            setOpenEditPopup(true);
+            console.log(params.row);
+        },
+        []
+    );
 
     return (
         <Grid item xs={12} md={12} lg={12}>
@@ -78,13 +95,7 @@ const OrderTb = ({ orders, loadOrders }) => {
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
-                        checkboxSelection
-                        getRowId={(row) => row.date + row.dayOfWeek}
-                        onSelectionModelChange={(ids) => {
-                            const selectedIDs = new Set(ids);
-                            const selectedRows = rows.filter((row) => selectedIDs.has(row.id));
-                            setSelectedRows(selectedRows);
-                        }}
+                        getRowId={(row) => row.date}
                         disableSelectionOnClick
                         experimentalFeatures={{ newEditingApi: true }}
                         columnVisibilityModel={{
@@ -101,6 +112,12 @@ const OrderTb = ({ orders, loadOrders }) => {
                     </Button>
                 </ButtonGroup>
             </Stack>
+            <Popup title="Dodaj sablon" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+                <OrderAddForm shift={shift} />
+            </Popup>
+            <Popup title="Izmijeni sablon" openPopup={openEditPopup} setOpenPopup={setOpenEditPopup}>
+                <OrderEditForm selectedOrder={selectedOrder} />
+            </Popup>
         </Grid>
     );
 };

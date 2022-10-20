@@ -19,7 +19,6 @@ export function updateMealsIsActive(selected) {
 }
 
 export function editMealSuccess(meal) {
-    debugger;
     return { type: actionTypes.EDIT_MEAL_SUCCESS, meal };
 }
 

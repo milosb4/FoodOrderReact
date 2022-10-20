@@ -88,3 +88,24 @@ export function getOrders(shift) {
         .then(handleResponse)
         .catch(handleError);
 }
+
+export function addOrder(order) {
+    debugger;
+    return fetch(baseUrl + 'order', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(order)
+    })
+        .then(handleResponse)
+        .catch(handleError);
+}
+
+export function editOrder(order) {
+    return fetch(baseUrl + 'order', {
+        method: 'PATCH',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(order)
+    })
+        .then(handleResponse)
+        .catch(handleError);
+}
